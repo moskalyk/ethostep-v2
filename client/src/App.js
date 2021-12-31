@@ -4,6 +4,14 @@ import axios from 'axios'
 import logo from './logo.svg';
 import './App.css';
 
+import img0 from './imgs/0.png'
+import img1 from './imgs/1.png'
+import img2 from './imgs/2.png'
+import img3 from './imgs/3.png'
+import img4 from './imgs/4.png'
+import img5 from './imgs/5.png'
+import img6 from './imgs/6.png'
+
 window.addEventListener("DOMContentLoaded",() => {
   const clock = new ProgressClock("#clock");
 });
@@ -167,38 +175,41 @@ class ProgressClock {
 }
 
 const chakras = {
-  0: '',
-  1: '',
-  2: '',
-  3: '',
-  4: '',
-  5: '',
-  6: ''
+  0: img0,
+  1: img1,
+  2: img2,
+  3: img3,
+  4: img4,
+  5: img5,
+  6: img6
 }
 function App() {
-  const [img, setImage] = useState('')
+  const [clock, setClock] = useState(0)
+  const [src, setSrc] = useState('')
   const [timer, setTimer] = useState(false)
-  useEffect(() =>{
+  useEffect(() => {
     if(!timer){ 
       setInterval(async () => {
         console.log('calling')
 
-        const res = await axios.get('http://localhost:1440/step')
+        const res = await axios.get('https://f827bf166e20.ngrok.io/step')
         console.log(res)
         const time = (new Date()).toString()
         console.log(time)
         const step = res.data.counter[(new Date()).toString()]
-        console.log(step)
-        setImage(chakras[step])
+        console.log(chakras[step])
+        // setSrc(step)
+        setClock(step)
+        setSrc(chakras[step])
       }, 1000)
       setTimer(true)
     }
-  })
+  }, [src])
   return (
     <>
     <div className="chakra">
-      <img src={img} />
-     <p>{img}</p>
+      <img width={100} style={{textAlign: 'center'}}src={src} />
+     <p style={{textAlign: 'center'}}>{clock}</p>
     </div>
     <div className="App">
       <div id="clock" class="progress-clock">

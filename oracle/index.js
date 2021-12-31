@@ -34,11 +34,13 @@ const timer = (db) => {
 
     	counter = {};
 
-    	counter[new Date(Date.now() + 2000)] = Math.floor(Math.random() * 8)
-    	counter[new Date(Date.now() + 1000)] = Math.floor(Math.random() * 8)
-    	counter[new Date()] = Math.floor(Math.random() * 8)
-    	counter[new Date(Date.now() - 1000)] = Math.floor(Math.random() * 8)
-    	counter[new Date(Date.now() - 2000)] = Math.floor(Math.random() * 8)
+    	counter[new Date(Date.now() + 3000)] = Math.floor(Math.random() * 7)
+    	counter[new Date(Date.now() + 2000)] = Math.floor(Math.random() * 7)
+    	counter[new Date(Date.now() + 1000)] = Math.floor(Math.random() * 7)
+    	counter[new Date()] = Math.floor(Math.random() * 7)
+    	counter[new Date(Date.now() - 1000)] = Math.floor(Math.random() * 7)
+    	counter[new Date(Date.now() - 2000)] = Math.floor(Math.random() * 7)
+    	counter[new Date(Date.now() - 3000)] = Math.floor(Math.random() * 7)
 
 		console.log(counter)
     	const doc = db.collection(DB_NAME).insert({
@@ -58,7 +60,7 @@ const bootstrap = async () => {
 
 	app.get('/step', async (req,res) => {
 		// res.set('Access-Control-Allow-Origin', '*');
-		res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.set('Access-Control-Allow-Origin', 'https://reed.ngrok.io');
 		res.send({counter: counter})
 	})
 
