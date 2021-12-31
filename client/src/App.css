@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 200px;
 }
 
 .App-logo {
@@ -14,7 +14,13 @@
   }
 }
 .chakra {
-  height: 200px;
+  height: 250px;
+  text-align: center;
+  margin: 100px;
+}
+
+.sephirah {
+  height: 250px;
   text-align: center;
   margin: 100px;
 }
@@ -79,8 +85,8 @@ body {
   align-content: center;
   position: relative;
   text-align: center;
-  width: 12em;
-  height: 12em;
+  width: 6.8em;
+  height: 6.8em;
 }
 .progress-clock__time-date,
 .progress-clock__time-digit,
@@ -100,12 +106,12 @@ body {
   grid-column: 1 / 6;
 }
 .progress-clock__time-date {
-  font-size: 0.75em;
+  font-size: 0.35em;
   line-height: 1.33;
 }
 .progress-clock__time-digit,
 .progress-clock__time-colon {
-  font-size: 2em;
+  font-size: 1em;
   font-weight: 400;
   grid-row: 2;
 }

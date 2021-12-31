@@ -10,6 +10,7 @@ const cron = require('node-cron');
 
 const DB_NAME = 'CHAKRA'
 let counter = {};
+let sephirah = {};
 
 const init = async () => {
 	const {Hypercore} = await SDK()
@@ -42,9 +43,21 @@ const timer = (db) => {
     	counter[new Date(Date.now() - 2000)] = Math.floor(Math.random() * 7)
     	counter[new Date(Date.now() - 3000)] = Math.floor(Math.random() * 7)
 
+       	sephirah = {};
+
+    	sephirah[new Date(Date.now() + 3000)] = Math.floor(Math.random() * 10)
+    	sephirah[new Date(Date.now() + 2000)] = Math.floor(Math.random() * 10)
+    	sephirah[new Date(Date.now() + 1000)] = Math.floor(Math.random() * 10)
+    	sephirah[new Date()] = Math.floor(Math.random() * 10)
+    	sephirah[new Date(Date.now() - 1000)] = Math.floor(Math.random() * 10)
+    	sephirah[new Date(Date.now() - 2000)] = Math.floor(Math.random() * 10)
+    	sephirah[new Date(Date.now() - 3000)] = Math.floor(Math.random() * 10)
+
 		console.log(counter)
+		console.log(sephirah)
     	const doc = db.collection(DB_NAME).insert({
-		  counter: counter
+		  counter: counter,
+		  sephirah: sephirah
 		})
 		console.log(doc)
   	});
@@ -60,8 +73,14 @@ const bootstrap = async () => {
 
 	app.get('/step', async (req,res) => {
 		// res.set('Access-Control-Allow-Origin', '*');
-		res.set('Access-Control-Allow-Origin', 'https://reed.ngrok.io');
+		res.set('Access-Control-Allow-Origin', 'https://ethostep.ngrok.io');
 		res.send({counter: counter})
+	})
+
+	app.get('/scan', async (req,res) => {
+		// res.set('Access-Control-Allow-Origin', '*');
+		res.set('Access-Control-Allow-Origin', 'https://ethostep.ngrok.io');
+		res.send({sephirah: sephirah})
 	})
 
 	app.listen(1440, () => {

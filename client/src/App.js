@@ -4,13 +4,27 @@ import axios from 'axios'
 import logo from './logo.svg';
 import './App.css';
 
-import img0 from './imgs/0.png'
-import img1 from './imgs/1.png'
-import img2 from './imgs/2.png'
-import img3 from './imgs/3.png'
-import img4 from './imgs/4.png'
-import img5 from './imgs/5.png'
-import img6 from './imgs/6.png'
+// chakra
+import img0 from './imgs/chakras/0.png'
+import img1 from './imgs/chakras/1.png'
+import img2 from './imgs/chakras/2.png'
+import img3 from './imgs/chakras/3.png'
+import img4 from './imgs/chakras/4.png'
+import img5 from './imgs/chakras/5.png'
+import img6 from './imgs/chakras/6.png'
+
+// sephirah
+import binah from './imgs/sephirah/binah.png'
+import chesed from './imgs/sephirah/chesed.png'
+import chokmah from './imgs/sephirah/chokmah.png'
+import daath from './imgs/sephirah/daath.png'
+import geburah from './imgs/sephirah/geburah.png'
+import hod from './imgs/sephirah/hod.png'
+import keter from './imgs/sephirah/keter.png'
+import malkuth from './imgs/sephirah/malkuth.png'
+import netzach from './imgs/sephirah/netzach.png'
+import tipareth from './imgs/sephirah/tipareth.png'
+import yesod from './imgs/sephirah/yesod.png'
 
 window.addEventListener("DOMContentLoaded",() => {
   const clock = new ProgressClock("#clock");
@@ -194,35 +208,91 @@ const chakra = {
   6: '🟣'
 }
 
+const sephirah = {
+  0: keter,
+  1: chokmah,
+  2: binah,
+  3: chesed,
+  4: geburah,
+  5: tipareth,
+  6: netzach,
+  7: hod,
+  8: yesod,
+  9: malkuth
+}
+let bodyMode = true
+
 function App() {
   const [clock, setClock] = useState(0)
   const [src, setSrc] = useState('')
   const [timer, setTimer] = useState(false)
+  const [mode, setMode] = useState(true)
+  const [color, setColor] = useState(true)
+  const [numOnline, setNumOnline] = useState(0)
+
   useEffect(() => {
     if(!timer){ 
-      setInterval(async () => {
+      setInterval(async (mode) => {
         console.log('calling')
 
-        const res = await axios.get('https://f827bf166e20.ngrok.io/step')
-        console.log(res)
-        const time = (new Date()).toString()
-        console.log(time)
-        const step = res.data.counter[(new Date()).toString()]
-        console.log(chakras[step])
-        // setSrc(step)
-        setClock(step)
-        setSrc(chakras[step])
+
+        if(bodyMode){
+          const res = await axios.get('https://f827bf166e20.ngrok.io/step')
+          console.log(res)
+          const time = (new Date()).toString()
+          console.log(time)
+          const step = res.data.counter[(new Date()).toString()]
+          console.log(chakras[step])
+          // setSrc(step)
+          setClock(step)
+          console.log(`mode: ${bodyMode}`)
+          setSrc(chakras[step])
+        }
       }, 1000)
+
+      setInterval(async (mode) => {
+        console.log('calling')
+
+        if(!bodyMode){
+          const res = await axios.get('https://f827bf166e20.ngrok.io/scan')
+          const time = (new Date()).toString()
+          const step = res.data.sephirah[(new Date()).toString()]
+          console.log(chakras[step])
+
+          console.log('setting sephirah')
+          setSrc(sephirah[step])
+        }
+      }, 7000)
+
       setTimer(true)
     }
-  }, [src])
+  }, [src, mode])
+
+  const changeMode = () => {
+    setMode(!mode)
+    bodyMode = !bodyMode
+  }
+
   return (
-    <>
-    <div className="chakra">
-      <p className='ethos'>ethOStep</p>
-      <p style={{margin: '20px'}}>{chakra[clock]}</p>
-      <img width={100} style={{textAlign: 'center'}}src={src} />
-    </div>
+    <div>
+
+    {
+      mode ? (
+        <div className="chakra">
+          <p className='ethos'>ethOStep</p>
+          <div style={{marginTop: '144px'}}>
+            <p style={{margin: '20px'}}>{chakra[clock]}</p>
+            <img width={100} style={{textAlign: 'center'}}src={src} />
+          </div>
+        </div>
+      ) : (
+        <div className="sephirah">
+          <p className='ethos'>ethOStep</p>
+          <img height={300} style={{textAlign: 'center'}} src={src} />
+        </div>
+      )
+    }
+    
     <div className="App">
       <div id="clock" class="progress-clock">
       <button class="progress-clock__time-date" data-group="d" type="button">
@@ -269,8 +339,10 @@ function App() {
         </g>
       </svg>
     </div>
+    <br/>
+    <button style={{background: '#f8efeb', cursor: 'pointer'}}onClick={changeMode}>{mode ? '🚻' : '🙏🏻🙏🏽🙏🏿'}</button>
     </div>
-  </>
+  </div>
 
   );
 }
