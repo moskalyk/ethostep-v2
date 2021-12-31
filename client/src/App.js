@@ -183,6 +183,17 @@ const chakras = {
   5: img5,
   6: img6
 }
+
+const chakra = {
+  0: '🔴',
+  1: '🟠',
+  2: '🟡',
+  3: '🟢',
+  4: '🔵',
+  5: '🧿',
+  6: '🟣'
+}
+
 function App() {
   const [clock, setClock] = useState(0)
   const [src, setSrc] = useState('')
@@ -208,8 +219,9 @@ function App() {
   return (
     <>
     <div className="chakra">
+      <p className='ethos'>ethOStep</p>
+      <p style={{margin: '20px'}}>{chakra[clock]}</p>
       <img width={100} style={{textAlign: 'center'}}src={src} />
-     <p style={{textAlign: 'center'}}>{clock}</p>
     </div>
     <div className="App">
       <div id="clock" class="progress-clock">

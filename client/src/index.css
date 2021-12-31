@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Gothic';
+  src: local('Gothic'), url(./fonts/dr_po_gothicru_regular.ttf) format('truetype');
+}
