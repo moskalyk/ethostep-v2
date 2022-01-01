@@ -26,6 +26,13 @@ import netzach from './imgs/sephirah/netzach.png'
 import tipareth from './imgs/sephirah/tipareth.png'
 import yesod from './imgs/sephirah/yesod.png'
 
+// had a dream I could breath underwater once, it was cool. 
+import { Fluence } from '@fluencelabs/fluence';
+import { UserList } from './UserList';
+import { fluentPadApp, relayNode } from './app/constants';
+import { CheckResponse, withErrorHandlingAsync } from './util';
+import { join, leave, registerAppConfig } from './_aqua/app';
+
 window.addEventListener("DOMContentLoaded",() => {
   const clock = new ProgressClock("#clock");
 });
@@ -230,7 +237,47 @@ function App() {
   const [color, setColor] = useState(true)
   const [numOnline, setNumOnline] = useState(0)
 
+  const [isConnected, setIsConnected] = useState(false);
+  const [isInRoom, setIsInRoom] = useState(false);
+  const [nickName, setNickName] = useState('');
+
+  const connect = async () => {
+        try {
+            await Fluence.start({ connectTo: relayNode });
+
+            setIsConnected(true);
+
+            registerAppConfig({
+                getApp: () => {
+                    return fluentPadApp
+                },
+            })
+        }
+        catch (err) {
+            console.log('Peer initialization failed', err)
+        }
+    }
+
+    const joinRoom = async () => {
+        if (!isConnected) {
+            return;
+        }
+
+        await withErrorHandlingAsync(async () => {
+            const res = await join( {
+                peer_id: Fluence.getStatus().peerId,
+                relay_id: Fluence.getStatus().relayPeerId,
+                name: nickName,
+            });
+            if (CheckResponse(res)) {
+                setIsInRoom(true);
+            }
+        });
+    };
+
   useEffect(() => {
+   connect()
+
     if(!timer){ 
       setInterval(async (mode) => {
         console.log('calling')
@@ -341,6 +388,7 @@ function App() {
     </div>
     <br/>
     <button style={{background: '#f8efeb', cursor: 'pointer'}}onClick={changeMode}>{mode ? '🚻' : '🙏🏻🙏🏽🙏🏿'}</button>
+    <UserList/>
     </div>
   </div>
 

@@ -2,15 +2,9 @@ import { useEffect, useState } from 'react';
 
 
 import { withErrorHandlingAsync } from './util';
-import { initAfterJoin, updateOnlineStatuses } from 'src/_aqua/app';
-import { registerUserStatus } from '_aqua/app';
+import { initAfterJoin, updateOnlineStatuses } from './_aqua/app';
+import { registerUserStatus } from './_aqua/app';
 import { Fluence, FluencePeer, PeerIdB58 } from '@fluencelabs/fluence';
-
-interface User {
-    id: PeerIdB58;
-    name: string;
-    isOnline: boolean;
-}
 
 const refreshOnlineStatusTimeoutMs = 10000;
 
@@ -72,8 +66,8 @@ export const UserList = (props) => {
         withErrorHandlingAsync(async () => {
             await initAfterJoin({
                 name: props.selfName,
-                peer_id: Fluence.getStatus().peerId!,
-                relay_id: Fluence.getStatus().relayPeerId!,
+                peer_id: Fluence.getStatus().peerId,
+                relay_id: Fluence.getStatus().relayPeerId,
             });
         });
 
